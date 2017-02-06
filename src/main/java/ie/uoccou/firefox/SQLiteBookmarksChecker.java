@@ -7,12 +7,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import ie.uoccou.util.HttpUtils;
-
+/**
+ * This talks directly to the SQLite firefox db. 
+ * Dont use firefox while this is running as when the code gets to the deletion 
+ * phase it throw an exception saying that db was updated by another process.
+ * 
+ * @author ultan
+ *
+ */
 public class SQLiteBookmarksChecker {
 	public static final String DEF_SQLLITE_FILE = "/home/ultan/.mozilla/firefox/8nghvy0l.default-1353957977070/places.sqlite";
 	private static final String DEF_SELECT = "select p.id as placeId,p.url,p.title as placeTitle,b.title as bookmarkTitle, p.last_visit_date as lastVisitDate, b.id as bookmarkId ,b.fk,b.parent from moz_places p, moz_bookmarks b where p.id=b.fk;";
@@ -20,7 +26,7 @@ public class SQLiteBookmarksChecker {
 	private static final String DEF_DELETE = "delete from moz_bookmarks where fk=?";
 	private static final String DEF_UPDATE_TEST = "update moz_bookmarks set title='FAILED' where fk=?";
 	private static final Long FOUR_YEARS_MILLIS = 126144000000L;//(4 * 365 * 24 * 60 * 60 * 1000);
-	private static final Long FORTY_YEARS_MILLIS = 1261440000000L;//(4 * 365 * 24 * 60 * 60 * 1000);
+	private static final Long FORTY_YEARS_MILLIS = 1261440000000L;//(40 * 365 * 24 * 60 * 60 * 1000);
 	private String query = DEF_SELECT;
 	private String countQuery = DEF_COUNT;
 	private Long oldest = FORTY_YEARS_MILLIS;//old enough not to delete by default
