@@ -114,7 +114,8 @@ public class SQLiteBookmarksChecker {
 	 * @param sqlLiteFile
 	 */
 	public void setSqlLiteFile(String sqlLiteFile) {
-		this.sqlLiteFile = sqlLiteFile;
+		if ( null != sqlLiteFile )
+			this.sqlLiteFile = sqlLiteFile;
 	}
 	
 	private List<Integer> runCheck() throws Exception {
@@ -206,7 +207,8 @@ public class SQLiteBookmarksChecker {
 	 * @param query
 	 */
 	public void setQuery(String query) {
-		this.query = query;
+		if ( null != query )
+			this.query = query;
 	}
 
 	public String getCountQuery() {
@@ -214,7 +216,8 @@ public class SQLiteBookmarksChecker {
 	}
 
 	public void setCountQuery(String countQuery) {
-		this.countQuery = countQuery;
+		if ( null != countQuery )
+			this.countQuery = countQuery;
 	}
 
 	public String getDeleteQuery() {
@@ -222,7 +225,8 @@ public class SQLiteBookmarksChecker {
 	}
 
 	public void setDeleteQuery(String deleteQuery) {
-		this.deleteQuery = deleteQuery;
+		if ( null != deleteQuery )
+			this.deleteQuery = deleteQuery;
 	}
 
 	public Long getOldest() {
@@ -230,7 +234,8 @@ public class SQLiteBookmarksChecker {
 	}
 
 	public void setOldest(Long oldest) {
-		this.oldest = oldest;
+		if (null != oldest )
+			this.oldest = oldest;
 	}
 
 }
