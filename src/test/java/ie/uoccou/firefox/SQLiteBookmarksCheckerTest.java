@@ -1,7 +1,11 @@
 package ie.uoccou.firefox;
 
 import org.junit.Test;
-
+/**
+ * 
+ * @author ultan
+ *
+ */
 public class SQLiteBookmarksCheckerTest {
 
 	@Test

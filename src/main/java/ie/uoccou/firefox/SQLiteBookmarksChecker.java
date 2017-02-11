@@ -13,7 +13,7 @@ import java.util.List;
 import ie.uoccou.util.HttpUtils;
 /**
  * This talks directly to the SQLite firefox db. 
- * Dont use firefox while this is running as when the code gets to the deletion 
+ * Don't use firefox while this is running as when the code gets to the deletion 
  * phase it throw an exception saying that db was updated by another process.
  * 
  * @author ultan
