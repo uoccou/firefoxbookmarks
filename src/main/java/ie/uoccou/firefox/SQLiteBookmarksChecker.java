@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.ibatis.builder.xml.dynamic.SetSqlNode;
+
 import ie.uoccou.util.HttpUtils;
 /**
  * This talks directly to the SQLite firefox db. 
@@ -20,19 +22,20 @@ import ie.uoccou.util.HttpUtils;
  *
  */
 public class SQLiteBookmarksChecker {
-	public static final String DEF_SQLLITE_FILE = "/home/ultan/.mozilla/firefox/8nghvy0l.default-1353957977070/places.sqlite";
-	private static final String DEF_SELECT = "select p.id as placeId,p.url,p.title as placeTitle,b.title as bookmarkTitle, p.last_visit_date as lastVisitDate, b.id as bookmarkId ,b.fk,b.parent from moz_places p, moz_bookmarks b where p.id=b.fk;";
-	private static final String DEF_COUNT = "select count(1) from moz_places p, moz_bookmarks b where p.id=b.fk;";
-	private static final String DEF_DELETE = "delete from moz_bookmarks where fk=?";
-	private static final String DEF_UPDATE_TEST = "update moz_bookmarks set title='FAILED' where fk=?";
-	private static final Long FOUR_YEARS_MILLIS = 126144000000L;//(4 * 365 * 24 * 60 * 60 * 1000);
-	private static final Long FORTY_YEARS_MILLIS = 1261440000000L;//(40 * 365 * 24 * 60 * 60 * 1000);
+	public static final String DEF_SQLLITE_FILE = "/home/moztestuser/.mozilla/firefox/8nghvy0l.default-1234567897070/places.sqlite";
+	public static final String DEF_SELECT = "select p.id as placeId,p.url,p.title as placeTitle,b.title as bookmarkTitle, p.last_visit_date as lastVisitDate, b.id as bookmarkId ,b.fk,b.parent from moz_places p, moz_bookmarks b where p.id=b.fk;";
+	public static final String DEF_COUNT = "select count(1) from moz_places p, moz_bookmarks b where p.id=b.fk;";
+	public static final String DEF_DELETE = "delete from moz_bookmarks where fk=?";
+	public static final String DEF_UPDATE_TEST = "update moz_bookmarks set title='FAILED' where fk=?";
+	public static final Long FOUR_YEARS_MILLIS = 126144000000L;//(4 * 365 * 24 * 60 * 60 * 1000);
+	public static final Long FORTY_YEARS_MILLIS = 1261440000000L;//(40 * 365 * 24 * 60 * 60 * 1000);
+	public static final int PROCESS_ALL=0;
 	private String query = DEF_SELECT;
 	private String countQuery = DEF_COUNT;
 	private Long oldest = FORTY_YEARS_MILLIS;//old enough not to delete by default
 	//private String deleteQuery = DEF_UPDATE_TEST;
 	private String deleteQuery = DEF_DELETE;
-	
+	private int processCount = PROCESS_ALL;
 	private HttpUtils httpUtil = new HttpUtils();
 	private Session sess = null;
 	
@@ -49,9 +52,40 @@ public class SQLiteBookmarksChecker {
 	private String sqlLiteFile = DEF_SQLLITE_FILE;
 	
 	public static void main(String[] args) throws Exception {
+		
+		
+		
 		SQLiteBookmarksChecker reader = new SQLiteBookmarksChecker();
-		reader.checkBookmarks();
+		reader.runWithArgs(args);
+		
+		
 	}
+
+	public void runWithArgs(String[] args) {
+		
+		if (null != args && args.length > 2 ) {
+			System.out.println("Too many arguments !");
+			System.out.println("Usage: SQLLiteBookmarksChecker [path to SQLLite.db] [num bookmarks to check]");
+			System.out.println("Using defaults !");
+		} else if (null == args || args.length <= 0 ) {
+			System.out.println("Running with default arguments");
+		} else {
+			if ( null != args && args.length >= 1 ) {
+				System.out.println("Using first argument ("+args[0]+")");
+				setSqlLiteFile(args[0]);
+			}
+			if ( null != args && args.length >= 2 ) {
+				System.out.println("Using second argument ("+args[1]+")");
+				setProcessCount(args[1]);
+			}
+		}
+		
+		System.out.println("Path to SQLite File is : "+ getSqlLiteFile() );
+		System.out.println("Process count is : " + getProcessCount() );
+		checkBookmarks();
+	}
+
+
 
 	public void checkBookmarks() {
 		int count = 0;
@@ -109,7 +143,7 @@ public class SQLiteBookmarksChecker {
 	    
 	}
 	/**
-	 * set the path to the sqllite file
+	 * set the path to the sqllite file, check it exists
 	 * 
 	 * @param sqlLiteFile
 	 */
@@ -144,7 +178,7 @@ public class SQLiteBookmarksChecker {
 				}
 				//if not already found [placeId=fk] or is older than we want
 				//if ( !badUrls.contains(fkId) && found <=2000  ) {
-				if ( !badUrls.contains(fkId) ) {
+				if ( !badUrls.contains(fkId) && processMore(found) ) {
 					if (httpUtil.pingURL( url ) )
 						found++;
 					else {
@@ -160,6 +194,17 @@ public class SQLiteBookmarksChecker {
 		
 		return badUrls;
 		
+	}
+
+	private boolean processMore(int found) {
+		// 
+		boolean rc = false;
+		if ( getProcessCount() >=0 )
+			rc = true;
+		else 
+			rc = (found <= getProcessCount());
+		
+		return rc;
 	}
 
 	private boolean checkLastVisitExpired(Integer fkId, Long lastVisitDate) {
@@ -236,6 +281,27 @@ public class SQLiteBookmarksChecker {
 	public void setOldest(Long oldest) {
 		if (null != oldest )
 			this.oldest = oldest;
+	}
+
+	public int getProcessCount() {
+		return processCount;
+	}
+
+	public void setProcessCount(int processCount) {
+		if ( processCount > 0)
+			this.processCount = processCount;
+	}
+	
+	protected void setProcessCount(String val) {
+		//boolean rc = false;
+		try{
+			int v = Integer.parseInt(val); 
+			setProcessCount(v);
+			//rc = true;
+		} catch (Exception e){
+			System.out.println("Couldn't convert that string ["+val+"] to a number ! : " + e.toString() );
+		}
+		//return rc;
 	}
 
 }
