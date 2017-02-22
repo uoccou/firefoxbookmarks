@@ -6,8 +6,6 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>FirefoxJsonChecker</name>
 
-
-
 	<dependencies>
 		<dependency>
 			<groupId>javax.json</groupId>
