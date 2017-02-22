@@ -1,7 +1,7 @@
 package ie.uoccou.firefox;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Ignore;
 import org.junit.Test;
 /**
  * 
@@ -10,63 +10,63 @@ import org.junit.Test;
  */
 public class SQLiteBookmarksCheckerTest {
 
-	@Test
+	@Ignore @Test
 	public void testMain() throws Exception {
 		throw new RuntimeException("not yet implemented");
 	}
 
-	@Test
+	@Ignore @Test
 	public void testCheckBookmarks() throws Exception {
 		throw new RuntimeException("not yet implemented");
 	}
 
-	@Test
+	@Ignore @Test
 	public void testGetSqlLiteFile() throws Exception {
 		throw new RuntimeException("not yet implemented");
 	}
 
-	@Test
+	@Ignore @Test
 	public void testSetSqlLiteFile() throws Exception {
 		//test null setting, bad file, good file
 		throw new RuntimeException("not yet implemented");
 	}
 
-	@Test
+	@Ignore @Test
 	public void testGetQuery() throws Exception {
 		throw new RuntimeException("not yet implemented");
 	}
 
-	@Test
+	@Ignore @Test
 	public void testSetQuery() throws Exception {
 		throw new RuntimeException("not yet implemented");
 	}
 
-	@Test
+	@Ignore @Test
 	public void testGetCountQuery() throws Exception {
 		throw new RuntimeException("not yet implemented");
 	}
 
-	@Test
+	@Ignore @Test
 	public void testSetCountQuery() throws Exception {
 		throw new RuntimeException("not yet implemented");
 	}
 
-	@Test
+	@Ignore @Test
 	public void testGetDeleteQuery() throws Exception {
 		throw new RuntimeException("not yet implemented");
 	}
 
-	@Test
+	@Ignore @Test
 	public void testSetDeleteQuery() throws Exception {
 		throw new RuntimeException("not yet implemented");
 	}
 
-	@Test
+	@Ignore @Test
 	public void testGetOldest() throws Exception {
 		throw new RuntimeException("not yet implemented");
 	}
 
-	@Test
+	@Ignore @Test
 	public void testSetOldest() throws Exception {
 		throw new RuntimeException("not yet implemented");
 	}
