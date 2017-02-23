@@ -13,12 +13,18 @@ pipeline {
         }
         stage('test') {
             steps {
-                sh 'mvn test'
+                sh 'mvn test || true'
+                junit '**/target/**/*.xml'
             }
         }
         stage('build') {
             steps {
                 sh 'mvn package'
+            }
+        }
+        stage('install') {
+            steps {
+                sh 'mvn install'
             }
         }
     }
