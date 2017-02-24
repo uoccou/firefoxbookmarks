@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>FirefoxJsonCheckerGroup</groupId>
-	<artifactId>FirefoxJsonCheckerArtifact</artifactId>
+	<groupId>ie.uoccou</groupId>
+	<artifactId>FirefoxBookmarkChecker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>FirefoxJsonChecker</name>
+	<name>FirefoxBookmarkChecker</name>
 
 	<dependencies>
 		<dependency>
@@ -43,24 +43,31 @@
 		</dependencies>
 	</dependencyManagement>
 	<reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-report-plugin</artifactId>
-                <version>2.19.1</version>
-                <configuration>
-                    <showSuccess>false</showSuccess>
-                    <outputDirectory>${basedir}/target/surefire-reports</outputDirectory>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>3.6</version>
-                <configuration>
-                    <outputDirectory>${basedir}/target/surefire-reports</outputDirectory>
-                </configuration>
-            </plugin>
-        </plugins>
-    </reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-report-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<showSuccess>false</showSuccess>
+					<outputDirectory>${basedir}/target/surefire-reports</outputDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>3.6</version>
+				<configuration>
+					<outputDirectory>${basedir}/target/surefire-reports</outputDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+	<distributionManagement>
+		<repository>
+			<id>internal.repo</id>
+			<name>UOCCOU Internal Repository</name>
+			<url>file:///tmp</url>
+		</repository>
+	</distributionManagement>
 </project>
